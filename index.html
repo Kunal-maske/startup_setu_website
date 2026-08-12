@@ -19,7 +19,7 @@
 
     <style>
         /* ============================================================
-           CLOAK — prevents FOUC before Tailwind JIT compiles
+           CLOAK — prevents FOUC
            ============================================================ */
         .cloak {
             opacity: 0;
@@ -28,7 +28,6 @@
         .cloak.ready {
             opacity: 1;
         }
-        /* Fallback background so white screen isn't completely empty */
         body {
             background: #ffffff;
             min-height: 100vh;
@@ -170,7 +169,7 @@
         }
 
         /* ============================================================
-           NAVBAR — Using CSS media queries for instant rendering
+           NAVBAR
            ============================================================ */
         .navbar-glass {
             background: rgba(255, 255, 255, 0.96);
@@ -200,6 +199,9 @@
             transition: var(--transition-smooth);
             text-decoration: none;
             white-space: nowrap;
+            cursor: pointer;
+            background: none;
+            border: none;
         }
 
         .nav-link::after {
@@ -255,7 +257,6 @@
             letter-spacing: 0.04em;
         }
 
-        /* ---- Desktop Nav (hidden on mobile, shown on lg) ---- */
         .nav-desktop {
             display: none;
             align-items: center;
@@ -275,7 +276,6 @@
             }
         }
 
-        /* ---- Hamburger (shown on mobile, hidden on lg) ---- */
         .hamburger-btn {
             display: flex;
             flex-direction: column;
@@ -315,7 +315,6 @@
             transform: rotate(-45deg) translate(5px, -6px);
         }
 
-        /* ---- Mobile Menu (slide-in) ---- */
         .nav-menu {
             position: fixed;
             top: 0;
@@ -379,7 +378,28 @@
         }
 
         /* ============================================================
-           HERO — image aspect-ratio container prevents layout shift
+           VIEWS (SPA)
+           ============================================================ */
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        .view:not(.home-view) .view-content {
+            padding-top: 120px;
+        }
+
+        @media (max-width: 768px) {
+            .view:not(.home-view) .view-content {
+                padding-top: 90px;
+            }
+        }
+
+        /* ============================================================
+           HERO (home view)
            ============================================================ */
         .hero {
             padding: 140px 0 80px;
@@ -412,7 +432,6 @@
             pointer-events: none;
         }
 
-        /* Fixed-aspect image container — reserves space before image loads */
         .hero-image-wrap {
             position: relative;
             border-radius: 24px;
@@ -458,9 +477,6 @@
             margin-top: 2px;
         }
 
-        /* ============================================================
-           ABOUT — image with fixed aspect ratio
-           ============================================================ */
         .about-image-wrap {
             position: relative;
             border-radius: 16px;
@@ -479,41 +495,31 @@
         }
 
         /* ============================================================
-           SERVICE CARDS
+           SERVICE / EVENT / MEDIA CARDS (shared)
            ============================================================ */
-        .service-card {
+        .service-card,
+        .event-card,
+        .media-card {
             background: #fff;
             border-radius: var(--radius-card);
-            padding: 36px 28px 32px;
+            padding: 28px 24px 24px;
             box-shadow: var(--shadow-sm);
             border: 1px solid rgba(0, 0, 0, 0.02);
             transition: var(--transition-smooth);
             height: 100%;
-            position: relative;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        .service-card:hover {
+        .service-card:hover,
+        .event-card:hover,
+        .media-card:hover {
             transform: translateY(-8px);
             box-shadow: var(--shadow-lg);
-            border-color: rgba(241, 90, 36, 0.15);
+            border-color: rgba(241, 90, 36, 0.12);
         }
 
-        .service-card .badge-number {
-            position: absolute;
-            top: -8px;
-            right: 12px;
-            font-size: 5rem;
-            font-weight: 900;
-            color: rgba(22, 65, 148, 0.04);
-            pointer-events: none;
-            line-height: 1;
-            user-select: none;
-        }
-
-        .service-icon {
+        .service-card .service-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -534,25 +540,27 @@
             transform: scale(1.04);
         }
 
-        .service-card h3 {
+        .service-card h3,
+        .event-card h3,
+        .media-card h3 {
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--primary-deep);
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 8px;
         }
 
-        .service-card p {
+        .service-card p,
+        .event-card p,
+        .media-card p {
             color: var(--text-muted);
             font-size: 0.95rem;
             line-height: 1.7;
-            position: relative;
-            z-index: 1;
             flex: 1;
         }
 
-        .service-card .read-more {
+        .service-card .read-more,
+        .event-card .read-more,
+        .media-card .read-more {
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -562,17 +570,51 @@
             text-decoration: none;
             margin-top: 16px;
             transition: var(--transition-smooth);
-            position: relative;
-            z-index: 1;
         }
 
-        .service-card .read-more:hover {
+        .service-card .read-more:hover,
+        .event-card .read-more:hover,
+        .media-card .read-more:hover {
             gap: 14px;
             color: var(--primary-deep);
         }
 
+        .event-card .event-date {
+            font-size: 0.8rem;
+            color: var(--secondary-orange);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .media-card .media-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+
+        .media-card .media-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .media-card .media-thumb .placeholder-icon {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #94a3b8;
+            background: #f1f5f9;
+        }
+
         /* ============================================================
-           SECTOR TILES
+           SECTOR TILES (home)
            ============================================================ */
         .sector-tile {
             background: #fff;
@@ -732,7 +774,7 @@
         }
 
         /* ============================================================
-           PARTNER / CLIENT CARDS
+           PARTNER CARDS
            ============================================================ */
         .partner-card {
             background: #fff;
@@ -756,16 +798,6 @@
             border-color: rgba(241, 90, 36, 0.10);
         }
 
-        .partner-card .logo-img {
-            width: 100%;
-            max-width: 120px;
-            height: 70px;
-            object-fit: contain;
-            display: block;
-            margin-bottom: 10px;
-            border-radius: 8px;
-        }
-
         .partner-card .logo-placeholder {
             width: 100%;
             max-width: 120px;
@@ -785,12 +817,6 @@
             font-weight: 600;
             font-size: 0.9rem;
             color: var(--primary-deep);
-        }
-
-        .partner-card .company-type {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 2px;
         }
 
         /* ============================================================
@@ -1005,6 +1031,9 @@
             .logo-wrapper {
                 margin-right: 0.75rem;
             }
+            .view:not(.home-view) .view-content {
+                padding-top: 90px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1021,10 +1050,6 @@
             }
             .service-card {
                 padding: 24px 18px 24px;
-            }
-            .service-card .badge-number {
-                font-size: 3.5rem;
-                right: 8px;
             }
             .metric-item .number {
                 font-size: 1.4rem;
@@ -1045,10 +1070,12 @@
                 width: 80px;
                 height: 80px;
             }
-            .partner-card .logo-img,
             .partner-card .logo-placeholder {
                 max-width: 80px;
                 height: 50px;
+            }
+            .view:not(.home-view) .view-content {
+                padding-top: 80px;
             }
         }
     </style>
@@ -1067,7 +1094,7 @@
     <header class="navbar-glass" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="container-custom flex items-center justify-between py-3 md:py-4">
 
-            <a href="#" class="logo-wrapper" aria-label="StartupSetu homepage">
+            <a href="#" class="logo-wrapper" aria-label="StartupSetu homepage" id="logoLink">
                 <img src="logo.png" alt="StartupSetu Logo" />
                 <div class="logo-tagline">
                     Salah Bhi, Sath Bhi!
@@ -1075,22 +1102,21 @@
                 </div>
             </a>
 
-            <!-- Desktop Nav — uses CSS media queries, no Tailwind responsive classes -->
             <nav class="nav-desktop" aria-label="Main menu">
-                <a href="#home" class="nav-link active">Home</a>
-                <a href="#about" class="nav-link">About Us</a>
-                <a href="#services" class="nav-link">Services</a>
-                <a href="#sectors" class="nav-link">Sectors</a>
-                <a href="#why-us" class="nav-link">Why Us</a>
-                <a href="#advisors" class="nav-link">Advisors</a>
-                <a href="#partners" class="nav-link">Partners</a>
-                <a href="#contact" class="nav-link">Contact</a>
+                <button class="nav-link active" data-view="home">Home</button>
+                <button class="nav-link" data-view="services">Services</button>
+                <button class="nav-link" data-view="events">Events</button>
+                <button class="nav-link" data-view="media">Media</button>
+                <button class="nav-link" data-view="home#sectors">Sectors</button>
+                <button class="nav-link" data-view="home#why-us">Why Us</button>
+                <button class="nav-link" data-view="home#advisors">Advisors</button>
+                <button class="nav-link" data-view="home#partners">Partners</button>
+                <button class="nav-link" data-view="home#contact">Contact</button>
                 <a href="#contact" class="btn-orange" style="padding:10px 24px; font-size:0.85rem;">
                     <i class="fas fa-headset"></i> Free Consultation
                 </a>
             </nav>
 
-            <!-- Hamburger — uses CSS media queries -->
             <button class="hamburger-btn" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
                 <span></span>
                 <span></span>
@@ -1098,16 +1124,16 @@
             </button>
         </div>
 
-        <!-- Mobile Menu (slide-in) -->
         <div class="nav-menu" id="mobileMenu" role="menu">
-            <a href="#home" class="nav-link" role="menuitem">Home</a>
-            <a href="#about" class="nav-link" role="menuitem">About Us</a>
-            <a href="#services" class="nav-link" role="menuitem">Services</a>
-            <a href="#sectors" class="nav-link" role="menuitem">Sectors We Serve</a>
-            <a href="#why-us" class="nav-link" role="menuitem">Why Choose Us</a>
-            <a href="#advisors" class="nav-link" role="menuitem">Advisors</a>
-            <a href="#partners" class="nav-link" role="menuitem">Our Partners</a>
-            <a href="#contact" class="nav-link" role="menuitem">Contact Us</a>
+            <button class="nav-link" data-view="home" role="menuitem">Home</button>
+            <button class="nav-link" data-view="services" role="menuitem">Services</button>
+            <button class="nav-link" data-view="events" role="menuitem">Events</button>
+            <button class="nav-link" data-view="media" role="menuitem">Media</button>
+            <button class="nav-link" data-view="home#sectors" role="menuitem">Sectors</button>
+            <button class="nav-link" data-view="home#why-us" role="menuitem">Why Us</button>
+            <button class="nav-link" data-view="home#advisors" role="menuitem">Advisors</button>
+            <button class="nav-link" data-view="home#partners" role="menuitem">Partners</button>
+            <button class="nav-link" data-view="home#contact" role="menuitem">Contact</button>
             <a href="#contact" class="btn-orange" role="menuitem" style="justify-content:center;">
                 <i class="fas fa-headset"></i> Free Consultation
             </a>
@@ -1115,594 +1141,527 @@
     </header>
 
     <!-- ============================================================
-    HERO SECTION
+    MAIN CONTENT — SPA Views
     ============================================================ -->
-    <section id="home" class="hero">
-        <div class="container-custom relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <main>
 
-                <!-- Left Column: Text + Metrics -->
-                <div>
-                    <span class="section-tag">
-                        <i class="fas fa-bridge mr-2"></i> India's Growth Bridge
-                    </span>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight text-[#164194]">
-                        Fueling the Future:<br />
-                        <span class="text-gradient-primary">One Bold Idea at a Time</span>
-                    </h1>
+        <!-- ============================================================
+        VIEW: HOME
+        ============================================================ -->
+        <section id="view-home" class="view home-view active">
 
-                    <p class="text-base md:text-lg text-[#4A5568] mt-4 max-w-xl leading-relaxed">
-                        Your guide to startup success. StartupSetu fuels your revolutionary idea from spark to launch.
-                        We're your pit crew, cheerleader, and sometimes therapist, all wrapped in one.
-                    </p>
-
-                    <div class="flex flex-wrap gap-4 mt-6">
-                        <a href="#services" class="btn-orange">
-                            <i class="fas fa-compass"></i> Explore Services
-                        </a>
-                        <a href="#about" class="btn-outline-deep">
-                            <i class="fas fa-info-circle"></i> How We Help
-                        </a>
-                    </div>
-
-                    <div class="metrics-dashboard" id="metricsDashboard">
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                            <div class="metric-item">
-                                <div class="number" data-target="25">0+</div>
-                                <div class="label">Years Experience</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="number" data-target="225">0+</div>
-                                <div class="label">Skilled Experts</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="number" data-target="1050">0+</div>
-                                <div class="label">Happy Clients</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="number" data-target="2500">0+</div>
-                                <div class="label">Complete Projects</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Column: Image with fixed aspect-ratio container -->
-                <div class="hero-image-wrap">
-                    <img
-                    src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=700&h=500&fit=crop&crop=center&auto=format"
-                    alt="Modern Indian consulting team collaborating"
-                    loading="eager"
-                    />
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-    ABOUT / WHO WE ARE
-    ============================================================ -->
-    <section id="about" class="section-padding bg-white">
-        <div class="container-custom">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <span class="section-tag"><i class="fas fa-users mr-2"></i> Who We Are</span>
-                    <h2 class="section-title">Fueling the Future: <br/>One Bold Idea at a Time</h2>
-                    <p class="text-base text-[#4A5568] mt-4 leading-relaxed">
-                        StartupSetu fuels your revolutionary idea from spark to launch. We're your pit crew, cheerleader,
-                        and sometimes therapist, all wrapped in one. No tired retreads here, just innovation and fresh
-                        perspectives.
-                    </p>
-                    <p class="text-base text-[#4A5568] mt-3 leading-relaxed">
-                        We'll help you reinvent the wheel or build a spaceship, because your game-changing genius
-                        deserves a platform. Let's ditch the dusty rulebooks and write your own success story, one
-                        mind-blowing idea at a time. Ready to blast off? Buckle up!
-                    </p>
-                    <div class="mt-6 flex flex-wrap gap-4">
-                        <a href="#services" class="btn-orange" style="padding:12px 28px;">
-                            <i class="fas fa-rocket"></i> Our Services
-                        </a>
-                        <a href="#contact" class="btn-outline-deep" style="padding:12px 28px;">
-                            <i class="fas fa-envelope"></i> Get in Touch
-                        </a>
-                    </div>
-                </div>
-                <div class="about-image-wrap">
-                    <img
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=450&fit=crop&crop=center&auto=format"
-                    alt="Team collaborating"
-                    loading="lazy"
-                    />
-                    <div class="absolute -bottom-4 -right-4 bg-[#F15A24] text-white text-sm font-bold px-6 py-3 rounded-2xl shadow-lg">
-                        <i class="fas fa-star mr-2"></i> 25+ Years Trust
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-    SERVICES PILLARS
-    ============================================================ -->
-    <section id="services" class="section-padding bg-[#F4F7FC]">
-        <div class="container-custom">
-            <div class="text-center max-w-2xl mx-auto mb-14">
-                <span class="section-tag"><i class="fas fa-cogs mr-2"></i> What We Do</span>
-                <h2 class="section-title">We Offer Creative Services</h2>
-                <p class="section-subtitle mx-auto mt-3">
-                    We bring together businesses looking for investment and investors with the capital, contacts and
-                    knowledge to help them succeed.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                <div class="service-card">
-                    <span class="badge-number">1</span>
-                    <div class="service-icon"><i class="fas fa-handshake"></i></div>
-                    <h3>Business Support Services</h3>
-                    <p>Outsourcing business support services for companies to streamline their operations, reduce costs,
-                    and access specialized skills and technologies.</p>
-                    <a href="#" class="read-more">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <div class="service-card">
-                    <span class="badge-number">2</span>
-                    <div class="service-icon"><i class="fas fa-project-diagram"></i></div>
-                    <h3>Business Blueprinting &amp; Consulting</h3>
-                    <p>Consulting services tailored to the specific needs and challenges of each client, providing a
-                    customized approach to improving business performance.</p>
-                    <a href="#" class="read-more">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <div class="service-card">
-                    <span class="badge-number">3</span>
-                    <div class="service-icon"><i class="fas fa-coins"></i></div>
-                    <h3>Business Funding &amp; Finance Assistance</h3>
-                    <p>This services encompass a range of financial solutions and support mechanisms designed to help
-                    businesses secure the necessary capital to operate, grow, and achieve their objectives.</p>
-                    <a href="#" class="read-more">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-    SECTORS WE SERVE
-    ============================================================ -->
-    <section id="sectors" class="section-padding bg-white">
-        <div class="container-custom">
-            <div class="text-center max-w-2xl mx-auto mb-14">
-                <span class="section-tag"><i class="fas fa-bullseye mr-2"></i> We Work For</span>
-                <h2 class="section-title">StartupSetu — Salah Bhi, Saath Bhi!</h2>
-                <p class="section-subtitle mx-auto mt-3">
-                    We are a team of industry Experts, Digital Business Transformation Experts, Startup Experts providing
-                    our expertise to new founders and entrepreneurs to bring ideas into reality.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <div class="sector-tile">
-                    <span class="sector-icon"><i class="fas fa-rocket"></i></span>
-                    <h4>Startups</h4>
-                    <p>StartupSetu Team provide the big support to any kind of startup from initial brainstorming to till
-                    VC Funding. Currently Indian Startups are growing rapidly and using govt platform for expansion &amp;
-                    Growth.</p>
-                    <a href="#" class="read-more-sm">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <div class="sector-tile">
-                    <span class="sector-icon"><i class="fas fa-industry"></i></span>
-                    <h4>MSMEs</h4>
-                    <p>We are good at provide the ease of business support to new MSME &amp; SHG to start the new Venture
-                    with any product &amp; services. We do provide the facility to understand the overall Business, its
-                    need and Supportive requirements as well.</p>
-                    <a href="#" class="read-more-sm">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <div class="sector-tile">
-                    <span class="sector-icon"><i class="fas fa-seedling"></i></span>
-                    <h4>FPC / FPO</h4>
-                    <p>We are having team of expert transform the agricultural industry along farmers by providing the
-                    end to end solutions to integrate Agri businesses, Farmer Producer Companies &amp; Farmer Producer
-                    Organisations.</p>
-                    <a href="#" class="read-more-sm">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <div class="sector-tile">
-                    <span class="sector-icon"><i class="fas fa-hand-holding-heart"></i></span>
-                    <h4>NGOs</h4>
-                    <p>Non Government Organisation / Trusts / Section 8 Companies are now days are doing really good
-                    support to society and nation to work on various causes. StartupSetu NGO Experts are Transforming NGO
-                    to provide more volunteering solutions to society.</p>
-                    <a href="#" class="read-more-sm">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <div class="sector-tile">
-                    <span class="sector-icon"><i class="fas fa-flask"></i></span>
-                    <h4>Incubators</h4>
-                    <p>StartupSetu's Incubation Development Consultant &amp; Expert Team is providing end to end
-                    Solutions and Setup the Incubation Centre which is a platform for new startups founders.</p>
-                    <a href="#" class="read-more-sm">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <div class="sector-tile">
-                    <span class="sector-icon"><i class="fas fa-university"></i></span>
-                    <h4>Colleges — NAAC Implementation</h4>
-                    <p>StartupSetu's College NAAC Implementation Consultants &amp; Expert Team is providing end to end
-                    Solutions and Setup the NAAC Process in College. NAAC Implementation is mandatory by UGC and our
-                    experts will give the advantages to colleges.</p>
-                    <a href="#" class="read-more-sm">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-    WHY CHOOSE US
-    ============================================================ -->
-    <section id="why-us" class="section-padding bg-[#F4F7FC]">
-        <div class="container-custom">
-            <div class="text-center max-w-2xl mx-auto mb-14">
-                <span class="section-tag"><i class="fas fa-medal mr-2"></i> Why Choose Us</span>
-                <h2 class="section-title">25 Years of Industry Experience</h2>
-                <p class="section-subtitle mx-auto mt-3">
-                    Group of business consultants and startup experts with around 25 years industry experience in
-                    business consulting.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
-                <div class="why-card">
-                    <span class="icon"><i class="fas fa-laptop-code"></i></span>
-                    <h4>Technology Consulting</h4>
-                </div>
-                <div class="why-card">
-                    <span class="icon"><i class="fas fa-building"></i></span>
-                    <h4>Organisation Development</h4>
-                </div>
-                <div class="why-card">
-                    <span class="icon"><i class="fas fa-users-cog"></i></span>
-                    <h4>HR Consulting</h4>
-                </div>
-                <div class="why-card">
-                    <span class="icon"><i class="fas fa-chart-pie"></i></span>
-                    <h4>Finance Consulting</h4>
-                </div>
-                <div class="why-card">
-                    <span class="icon"><i class="fas fa-chart-line"></i></span>
-                    <h4>Marketing Consulting</h4>
-                </div>
-            </div>
-
-            <div class="why-stats grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto text-center">
-                <div>
-                    <div class="number" data-target="25">0</div>
-                    <div class="label">Years Experience</div>
-                </div>
-                <div>
-                    <div class="number" data-target="225">0</div>
-                    <div class="label">Skilled Experts</div>
-                </div>
-                <div>
-                    <div class="number" data-target="1050">0</div>
-                    <div class="label">Happy Clients</div>
-                </div>
-                <div>
-                    <div class="number" data-target="2500">0</div>
-                    <div class="label">Complete Projects</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-    STARTUP ADVISORS
-    ============================================================ -->
-    <section id="advisors" class="section-padding bg-white">
-        <div class="container-custom">
-            <div class="text-center max-w-2xl mx-auto mb-14">
-                <span class="section-tag"><i class="fas fa-user-tie mr-2"></i> Our Team</span>
-                <h2 class="section-title">Startup Advisors</h2>
-                <p class="section-subtitle mx-auto mt-3">
-                    Meet our experienced advisors who bring decades of industry expertise to guide your journey.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-                <div class="advisor-card">
-                    <img src="https://ui-avatars.com/api/?name=Rajesh+Sharma&background=F15A24&color=fff&size=128&font-size=0.4" alt="Rajesh Sharma" class="avatar" />
-                    <h4>Rajesh Sharma</h4>
-                    <div class="designation">Chief Strategy Advisor</div>
-                    <p class="bio">25+ years in corporate strategy &amp; business transformation. Ex-McKinsey, IIM Ahmedabad.</p>
-                </div>
-
-                <div class="advisor-card">
-                    <img src="https://ui-avatars.com/api/?name=Priya+Patel&background=1B75BC&color=fff&size=128&font-size=0.4" alt="Priya Patel" class="avatar" />
-                    <h4>Priya Patel</h4>
-                    <div class="designation">Funding &amp; Investment Expert</div>
-                    <p class="bio">VC partner with 15+ successful exits. Specializes in early-stage funding &amp; investor relations.</p>
-                </div>
-
-                <div class="advisor-card">
-                    <img src="https://ui-avatars.com/api/?name=Anand+Deshmukh&background=164194&color=fff&size=128&font-size=0.4" alt="Anand Deshmukh" class="avatar" />
-                    <h4>Anand Deshmukh</h4>
-                    <div class="designation">MSME &amp; FPO Specialist</div>
-                    <p class="bio">Former SIDBI director with deep expertise in MSME scaling, FPO structuring &amp; agri-finance.</p>
-                </div>
-
-                <div class="advisor-card">
-                    <img src="https://ui-avatars.com/api/?name=Meera+Joshi&background=112A61&color=fff&size=128&font-size=0.4" alt="Meera Joshi" class="avatar" />
-                    <h4>Meera Joshi</h4>
-                    <div class="designation">NGO &amp; Social Impact Advisor</div>
-                    <p class="bio">15+ years in social sector consulting. Expert in Section 8 companies, trusts &amp; impact measurement.</p>
-                </div>
-
-                <div class="advisor-card">
-                    <img src="https://ui-avatars.com/api/?name=Vikram+Singh&background=F15A24&color=fff&size=128&font-size=0.4" alt="Vikram Singh" class="avatar" />
-                    <h4>Vikram Singh</h4>
-                    <div class="designation">Incubation &amp; Innovation Lead</div>
-                    <p class="bio">IIT Bombay alum with 12+ years building incubation ecosystems across India &amp; SE Asia.</p>
-                </div>
-
-                <div class="advisor-card">
-                    <img src="https://ui-avatars.com/api/?name=Sunita+Rao&background=1B75BC&color=fff&size=128&font-size=0.4" alt="Sunita Rao" class="avatar" />
-                    <h4>Sunita Rao</h4>
-                    <div class="designation">NAAC &amp; Education Consultant</div>
-                    <p class="bio">Former UGC member with 20+ years in higher education policy &amp; NAAC accreditation processes.</p>
-                </div>
-
-                <div class="advisor-card">
-                    <img src="https://ui-avatars.com/api/?name=Arjun+Nair&background=164194&color=fff&size=128&font-size=0.4" alt="Arjun Nair" class="avatar" />
-                    <h4>Arjun Nair</h4>
-                    <div class="designation">Technology &amp; Digital Strategy</div>
-                    <p class="bio">Digital transformation expert with 18+ years in enterprise tech &amp; startup product strategy.</p>
-                </div>
-
-                <div class="advisor-card">
-                    <img src="https://ui-avatars.com/api/?name=Kavita+Menon&background=112A61&color=fff&size=128&font-size=0.4" alt="Kavita Menon" class="avatar" />
-                    <h4>Kavita Menon</h4>
-                    <div class="designation">HR &amp; Organizational Development</div>
-                    <p class="bio">OD specialist with 22+ years in building high-performance cultures across startups &amp; corporates.</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-    PARTNERS
-    ============================================================ -->
-    <section id="partners" class="section-padding bg-[#F4F7FC]">
-        <div class="container-custom">
-
-            <!-- Solution Partners -->
-            <div class="text-center mb-10">
-                <span class="section-tag"><i class="fas fa-handshake mr-2"></i> Our Partners</span>
-                <h2 class="section-title">Solution Partners</h2>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-16">
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #164194, #1B75BC);">NA</div>
-                    <div class="company-name">NITI Aayog</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #0B1B3D, #164194);">SB</div>
-                    <div class="company-name">SIDBI</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #F15A24, #1B75BC);">II</div>
-                    <div class="company-name">IIT Incubation</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #112A61, #164194);">FI</div>
-                    <div class="company-name">FICCI</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #1B75BC, #0B1B3D);">NS</div>
-                    <div class="company-name">NSDC</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #164194, #F15A24);">NC</div>
-                    <div class="company-name">NCC</div>
-                </div>
-            </div>
-
-            <!-- Associate Partners -->
-            <div class="text-center mb-10">
-                <span class="section-tag"><i class="fas fa-users mr-2"></i> Our Partners</span>
-                <h2 class="section-title">Associate Partners</h2>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-16">
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #1B75BC, #112A61);">TM</div>
-                    <div class="company-name">Tech Mahindra</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #164194, #0B1B3D);">IN</div>
-                    <div class="company-name">Infosys</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #F15A24, #164194);">AM</div>
-                    <div class="company-name">Amul</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #112A61, #1B75BC);">AP</div>
-                    <div class="company-name">Apollo</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #1B75BC, #F15A24);">IT</div>
-                    <div class="company-name">ITC Agri</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #0B1B3D, #F15A24);">TG</div>
-                    <div class="company-name">Tata Group</div>
-                </div>
-            </div>
-
-            <!-- Esteemed Clients -->
-            <div class="text-center mb-10">
-                <span class="section-tag"><i class="fas fa-star mr-2"></i> Our Partners</span>
-                <h2 class="section-title">Esteemed Clients</h2>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #164194, #0B1B3D);">IC</div>
-                    <div class="company-name">ICICI Bank</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #1B75BC, #112A61);">TC</div>
-                    <div class="company-name">Tata Consultancy</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #F15A24, #164194);">MM</div>
-                    <div class="company-name">Mahindra &amp; Mahindra</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #112A61, #1B75BC);">RJ</div>
-                    <div class="company-name">Reliance Jio</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #0B1B3D, #F15A24);">FK</div>
-                    <div class="company-name">Flipkart</div>
-                </div>
-                <div class="partner-card">
-                    <div class="logo-placeholder" style="background: linear-gradient(135deg, #164194, #1B75BC);">IG</div>
-                    <div class="company-name">IndiGo</div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ============================================================
-    CONTACT
-    ============================================================ -->
-    <section id="contact" class="section-padding bg-white">
-        <div class="container-custom">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <span class="section-tag"><i class="fas fa-paper-plane mr-2"></i> Let's Connect</span>
-                <h2 class="section-title">Take the Next Step</h2>
-                <p class="section-subtitle mx-auto mt-2">
-                    Ready to transform your vision into reality? Reach out to our team today.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-
-                <div class="contact-form-card">
-                    <form id="contactForm" novalidate>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="fullName">Full Name <span class="text-[#F15A24]">*</span></label>
-                                <input type="text" id="fullName" placeholder="e.g. Priya Sharma" required />
-                            </div>
-                            <div>
-                                <label for="email">Email Address <span class="text-[#F15A24]">*</span></label>
-                                <input type="email" id="email" placeholder="priya@startup.com" required />
-                            </div>
-                            <div>
-                                <label for="phone">Phone Number <span class="text-[#F15A24]">*</span></label>
-                                <input type="tel" id="phone" placeholder="+91 98765 43210" required />
-                            </div>
-                            <div>
-                                <label for="organization">Organization <span class="text-[#F15A24]">*</span></label>
-                                <input type="text" id="organization" placeholder="Your company / org" required />
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <label for="district">Select District <span class="text-[#F15A24]">*</span></label>
-                            <select id="district" required>
-                                <option value="">— Select Maharashtra District —</option>
-                                <option value="pune">Pune</option>
-                                <option value="ahmednagar">Ahmednagar</option>
-                                <option value="nagpur">Nagpur</option>
-                                <option value="mumbai-city">Mumbai City</option>
-                                <option value="solapur">Solapur</option>
-                                <option value="nashik">Nashik</option>
-                                <option value="thane">Thane</option>
-                                <option value="aurangabad">Aurangabad</option>
-                                <option value="kolhapur">Kolhapur</option>
-                                <option value="satara">Satara</option>
-                                <option value="sangli">Sangli</option>
-                                <option value="jalgaon">Jalgaon</option>
-                                <option value="amravati">Amravati</option>
-                                <option value="nanded">Nanded</option>
-                                <option value="latur">Latur</option>
-                            </select>
-                            <p class="text-xs text-[#4A5568] mt-1">
-                                <i class="fas fa-map-pin text-[#F15A24] mr-1"></i> We serve all Maharashtra districts.
+            <!-- HERO -->
+            <div class="hero">
+                <div class="container-custom relative z-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                        <div>
+                            <span class="section-tag">
+                                <i class="fas fa-bridge mr-2"></i> India's Growth Bridge
+                            </span>
+                            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight text-[#164194]">
+                                Fueling the Future:<br />
+                                <span class="text-gradient-primary">One Bold Idea at a Time</span>
+                            </h1>
+                            <p class="text-base md:text-lg text-[#4A5568] mt-4 max-w-xl leading-relaxed">
+                                StartupSetu fuels your revolutionary idea from spark to launch. We bring together businesses looking for investment and investors with capital, contacts, and knowledge to succeed.
                             </p>
+                            <div class="flex flex-wrap gap-4 mt-6">
+                                <a href="#services" class="btn-orange">
+                                    <i class="fas fa-compass"></i> Explore Services
+                                </a>
+                                <a href="#about" class="btn-outline-deep">
+                                    <i class="fas fa-info-circle"></i> How We Help
+                                </a>
+                            </div>
+                            <div class="metrics-dashboard" id="metricsDashboard">
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                                    <div class="metric-item">
+                                        <div class="number" data-target="25">0+</div>
+                                        <div class="label">Years Experience</div>
+                                    </div>
+                                    <div class="metric-item">
+                                        <div class="number" data-target="10">0+</div>
+                                        <div class="label">Skilled Experts</div>
+                                    </div>
+                                    <div class="metric-item">
+                                        <div class="number" data-target="47">0+</div>
+                                        <div class="label">Happy Clients</div>
+                                    </div>
+                                    <div class="metric-item">
+                                        <div class="number" data-target="113">0+</div>
+                                        <div class="label">Completed Projects</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="mt-4">
-                            <label for="message">Message <span class="text-[#F15A24]">*</span></label>
-                            <textarea id="message" rows="4" placeholder="Tell us about your goals, challenges, or funding needs…" required></textarea>
+                        <div class="hero-image-wrap">
+                            <img
+                            src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=700&h=500&fit=crop&crop=center&auto=format"
+                            alt="Modern Indian consulting team collaborating"
+                            loading="eager"
+                            />
                         </div>
-
-                        <button type="submit" class="btn-orange mt-5" id="submitBtn">
-                            <i class="fas fa-phone-alt"></i> Request a Call
-                        </button>
-
-                        <div id="formSuccess" class="form-success mt-4">
-                            <div class="text-4xl mb-2">✅</div>
-                            <p class="font-semibold text-[#164194]">Thank you! We'll reach out within 24 hours.</p>
-                            <button type="button" class="text-[#F15A24] text-sm font-medium mt-2 hover:underline" onclick="resetContactForm()">Send another request</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="map-vector">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <h4>Maharashtra Regional Network</h4>
-                    <p>Wakad, Pune, Maharashtra, India</p>
-                    <div class="mt-4 text-sm text-[#4A5568] space-y-1">
-                        <p><i class="fas fa-envelope text-[#F15A24] mr-2"></i> hello@startupsetu.com</p>
-                        <p><i class="fas fa-phone text-[#F15A24] mr-2"></i> +91 99999 99999</p>
-                        <p><i class="fas fa-map-pin text-[#F15A24] mr-2"></i> Wakad, Pune, MH, India</p>
                     </div>
-                    <div class="mt-6 text-5xl opacity-10 text-[#164194]">
-                        <i class="fas fa-bridge"></i>
-                    </div>
                 </div>
-
             </div>
-        </div>
-    </section>
+
+            <!-- ABOUT -->
+            <section id="about" class="section-padding bg-white">
+                <div class="container-custom">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <span class="section-tag"><i class="fas fa-users mr-2"></i> Who We Are</span>
+                            <h2 class="section-title">Fueling the Future: <br/>One Bold Idea at a Time</h2>
+                            <p class="text-base text-[#4A5568] mt-4 leading-relaxed">
+                                StartupSetu fuels your revolutionary idea from spark to launch. We're your pit crew, cheerleader, and strategic partner — all wrapped in one. No tired retreads here, just innovation and fresh perspectives.
+                            </p>
+                            <p class="text-base text-[#4A5568] mt-3 leading-relaxed">
+                                We bring together businesses looking for investment and investors with the capital, contacts, and knowledge to help them succeed. Let's ditch the dusty rulebooks and write your own success story, one mind-blowing idea at a time. Ready to blast off? Buckle up!
+                            </p>
+                            <div class="mt-6 flex flex-wrap gap-4">
+                                <a href="#services" class="btn-orange" style="padding:12px 28px;">
+                                    <i class="fas fa-rocket"></i> Our Services
+                                </a>
+                                <a href="#contact" class="btn-outline-deep" style="padding:12px 28px;">
+                                    <i class="fas fa-envelope"></i> Get in Touch
+                                </a>
+                            </div>
+                        </div>
+                        <div class="about-image-wrap">
+                            <img
+                            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=450&fit=crop&crop=center&auto=format"
+                            alt="Team collaborating"
+                            loading="lazy"
+                            />
+                            <div class="absolute -bottom-4 -right-4 bg-[#F15A24] text-white text-sm font-bold px-6 py-3 rounded-2xl shadow-lg">
+                                <i class="fas fa-star mr-2"></i> 25+ Years Trust
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTORS / TARGET VERTICALS -->
+            <section id="sectors" class="section-padding bg-[#F4F7FC]">
+                <div class="container-custom">
+                    <div class="text-center max-w-2xl mx-auto mb-14">
+                        <span class="section-tag"><i class="fas fa-bullseye mr-2"></i> Who We Serve</span>
+                        <h2 class="section-title">Sectors We Empower</h2>
+                        <p class="section-subtitle mx-auto mt-3">
+                            Purpose-built solutions for India's most dynamic sectors — from ideation to scale, we're with you every step of the way.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="sector-tile">
+                            <span class="sector-icon"><i class="fas fa-rocket"></i></span>
+                            <h4>Startups</h4>
+                            <p>From initial brainstorming to VC funding, we support startups at every stage. India's startup ecosystem is growing rapidly — we help founders leverage government platforms for expansion and growth.</p>
+                            <a href="#" class="read-more-sm">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="sector-tile">
+                            <span class="sector-icon"><i class="fas fa-industry"></i></span>
+                            <h4>MSMEs &amp; SHGs</h4>
+                            <p>We provide ease-of-business support to new MSMEs and Self-Help Groups launching ventures. From product development to operational readiness, we help you understand your business needs and requirements.</p>
+                            <a href="#" class="read-more-sm">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="sector-tile">
+                            <span class="sector-icon"><i class="fas fa-seedling"></i></span>
+                            <h4>FPC / FPOs</h4>
+                            <p>Our expert team transforms the agricultural industry alongside farmers. We provide end-to-end solutions to integrate agri-businesses, Farmer Producer Companies, and Farmer Producer Organizations.</p>
+                            <a href="#" class="read-more-sm">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="sector-tile">
+                            <span class="sector-icon"><i class="fas fa-hand-holding-heart"></i></span>
+                            <h4>NGOs &amp; Section 8</h4>
+                            <p>Non-Government Organizations, Trusts, and Section 8 companies are driving real change in society. StartupSetu's NGO experts help you deliver more impactful solutions and run cause-driven projects that support the nation's growth.</p>
+                            <a href="#" class="read-more-sm">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="sector-tile">
+                            <span class="sector-icon"><i class="fas fa-flask"></i></span>
+                            <h4>Incubators</h4>
+                            <p>StartupSetu's Incubation Development Consultants provide end-to-end solutions for setting up Incubation Centres — creating platforms where new founders can launch and scale their ventures.</p>
+                            <a href="#" class="read-more-sm">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="sector-tile">
+                            <span class="sector-icon"><i class="fas fa-university"></i></span>
+                            <h4>Colleges — NAAC Implementation</h4>
+                            <p>Our NAAC Implementation Consultants provide complete solutions for setting up the NAAC process in colleges. With UGC mandating NAAC accreditation, our experts help institutions gain a competitive advantage.</p>
+                            <a href="#" class="read-more-sm">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WHY CHOOSE US / CONSULTING SPECIALIZATIONS -->
+            <section id="why-us" class="section-padding bg-white">
+                <div class="container-custom">
+                    <div class="text-center max-w-2xl mx-auto mb-14">
+                        <span class="section-tag"><i class="fas fa-medal mr-2"></i> Why Choose Us</span>
+                        <h2 class="section-title">25+ Years of Industry Experience</h2>
+                        <p class="section-subtitle mx-auto mt-3">
+                            A group of business consultants and startup experts with deep industry experience across the full spectrum of business consulting.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
+                        <div class="why-card">
+                            <span class="icon"><i class="fas fa-laptop-code"></i></span>
+                            <h4>Technology Consulting</h4>
+                        </div>
+                        <div class="why-card">
+                            <span class="icon"><i class="fas fa-building"></i></span>
+                            <h4>Organisation Development</h4>
+                        </div>
+                        <div class="why-card">
+                            <span class="icon"><i class="fas fa-users-cog"></i></span>
+                            <h4>HR Consulting</h4>
+                        </div>
+                        <div class="why-card">
+                            <span class="icon"><i class="fas fa-chart-pie"></i></span>
+                            <h4>Finance Consulting</h4>
+                        </div>
+                        <div class="why-card">
+                            <span class="icon"><i class="fas fa-chart-line"></i></span>
+                            <h4>Marketing Consulting</h4>
+                        </div>
+                    </div>
+                    <div class="why-stats grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto text-center">
+                        <div>
+                            <div class="number" data-target="25">0</div>
+                            <div class="label">Years Experience</div>
+                        </div>
+                        <div>
+                            <div class="number" data-target="10">0</div>
+                            <div class="label">Skilled Experts</div>
+                        </div>
+                        <div>
+                            <div class="number" data-target="47">0</div>
+                            <div class="label">Happy Clients</div>
+                        </div>
+                        <div>
+                            <div class="number" data-target="113">0</div>
+                            <div class="label">Completed Projects</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADVISORS -->
+            <section id="advisors" class="section-padding bg-[#F4F7FC]">
+                <div class="container-custom">
+                    <div class="text-center max-w-2xl mx-auto mb-14">
+                        <span class="section-tag"><i class="fas fa-user-tie mr-2"></i> Our Team</span>
+                        <h2 class="section-title">Startup Advisors</h2>
+                        <p class="section-subtitle mx-auto mt-3">
+                            Meet our experienced advisors who bring decades of industry expertise to guide your journey.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <div class="advisor-card">
+                            <img src="https://ui-avatars.com/api/?name=Rajesh+Sharma&background=F15A24&color=fff&size=128&font-size=0.4" alt="Rajesh Sharma" class="avatar" />
+                            <h4>Rajesh Sharma</h4>
+                            <div class="designation">Chief Strategy Advisor</div>
+                            <p class="bio">25+ years in corporate strategy &amp; business transformation. Ex-McKinsey, IIM Ahmedabad.</p>
+                        </div>
+                        <div class="advisor-card">
+                            <img src="https://ui-avatars.com/api/?name=Priya+Patel&background=1B75BC&color=fff&size=128&font-size=0.4" alt="Priya Patel" class="avatar" />
+                            <h4>Priya Patel</h4>
+                            <div class="designation">Funding &amp; Investment Expert</div>
+                            <p class="bio">VC partner with 15+ successful exits. Specializes in early-stage funding &amp; investor relations.</p>
+                        </div>
+                        <div class="advisor-card">
+                            <img src="https://ui-avatars.com/api/?name=Anand+Deshmukh&background=164194&color=fff&size=128&font-size=0.4" alt="Anand Deshmukh" class="avatar" />
+                            <h4>Anand Deshmukh</h4>
+                            <div class="designation">MSME &amp; FPO Specialist</div>
+                            <p class="bio">Former SIDBI director with deep expertise in MSME scaling, FPO structuring &amp; agri-finance.</p>
+                        </div>
+                        <div class="advisor-card">
+                            <img src="https://ui-avatars.com/api/?name=Meera+Joshi&background=112A61&color=fff&size=128&font-size=0.4" alt="Meera Joshi" class="avatar" />
+                            <h4>Meera Joshi</h4>
+                            <div class="designation">NGO &amp; Social Impact Advisor</div>
+                            <p class="bio">15+ years in social sector consulting. Expert in Section 8 companies, trusts &amp; impact measurement.</p>
+                        </div>
+                        <div class="advisor-card">
+                            <img src="https://ui-avatars.com/api/?name=Vikram+Singh&background=F15A24&color=fff&size=128&font-size=0.4" alt="Vikram Singh" class="avatar" />
+                            <h4>Vikram Singh</h4>
+                            <div class="designation">Incubation &amp; Innovation Lead</div>
+                            <p class="bio">IIT Bombay alum with 12+ years building incubation ecosystems across India &amp; SE Asia.</p>
+                        </div>
+                        <div class="advisor-card">
+                            <img src="https://ui-avatars.com/api/?name=Sunita+Rao&background=1B75BC&color=fff&size=128&font-size=0.4" alt="Sunita Rao" class="avatar" />
+                            <h4>Sunita Rao</h4>
+                            <div class="designation">NAAC &amp; Education Consultant</div>
+                            <p class="bio">Former UGC member with 20+ years in higher education policy &amp; NAAC accreditation processes.</p>
+                        </div>
+                        <div class="advisor-card">
+                            <img src="https://ui-avatars.com/api/?name=Arjun+Nair&background=164194&color=fff&size=128&font-size=0.4" alt="Arjun Nair" class="avatar" />
+                            <h4>Arjun Nair</h4>
+                            <div class="designation">Technology &amp; Digital Strategy</div>
+                            <p class="bio">Digital transformation expert with 18+ years in enterprise tech &amp; startup product strategy.</p>
+                        </div>
+                        <div class="advisor-card">
+                            <img src="https://ui-avatars.com/api/?name=Kavita+Menon&background=112A61&color=fff&size=128&font-size=0.4" alt="Kavita Menon" class="avatar" />
+                            <h4>Kavita Menon</h4>
+                            <div class="designation">HR &amp; Organizational Development</div>
+                            <p class="bio">OD specialist with 22+ years in building high-performance cultures across startups &amp; corporates.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PARTNERS -->
+            <section id="partners" class="section-padding bg-white">
+                <div class="container-custom">
+                    <div class="text-center mb-10">
+                        <span class="section-tag"><i class="fas fa-handshake mr-2"></i> Our Partners</span>
+                        <h2 class="section-title">Solution Partners</h2>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-16">
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #164194, #1B75BC);">NA</div>
+                            <div class="company-name">NITI Aayog</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #0B1B3D, #164194);">SB</div>
+                            <div class="company-name">SIDBI</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #F15A24, #1B75BC);">II</div>
+                            <div class="company-name">IIT Incubation</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #112A61, #164194);">FI</div>
+                            <div class="company-name">FICCI</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #1B75BC, #0B1B3D);">NS</div>
+                            <div class="company-name">NSDC</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #164194, #F15A24);">NC</div>
+                            <div class="company-name">NCC</div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-10">
+                        <span class="section-tag"><i class="fas fa-users mr-2"></i> Our Partners</span>
+                        <h2 class="section-title">Associate Partners</h2>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-16">
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #1B75BC, #112A61);">TM</div>
+                            <div class="company-name">Tech Mahindra</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #164194, #0B1B3D);">IN</div>
+                            <div class="company-name">Infosys</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #F15A24, #164194);">AM</div>
+                            <div class="company-name">Amul</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #112A61, #1B75BC);">AP</div>
+                            <div class="company-name">Apollo</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #1B75BC, #F15A24);">IT</div>
+                            <div class="company-name">ITC Agri</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #0B1B3D, #F15A24);">TG</div>
+                            <div class="company-name">Tata Group</div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-10">
+                        <span class="section-tag"><i class="fas fa-star mr-2"></i> Our Partners</span>
+                        <h2 class="section-title">Esteemed Clients</h2>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #164194, #0B1B3D);">IC</div>
+                            <div class="company-name">ICICI Bank</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #1B75BC, #112A61);">TC</div>
+                            <div class="company-name">Tata Consultancy</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #F15A24, #164194);">MM</div>
+                            <div class="company-name">Mahindra &amp; Mahindra</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #112A61, #1B75BC);">RJ</div>
+                            <div class="company-name">Reliance Jio</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #0B1B3D, #F15A24);">FK</div>
+                            <div class="company-name">Flipkart</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="logo-placeholder" style="background: linear-gradient(135deg, #164194, #1B75BC);">IG</div>
+                            <div class="company-name">IndiGo</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACT -->
+            <section id="contact" class="section-padding bg-[#F4F7FC]">
+                <div class="container-custom">
+                    <div class="text-center max-w-2xl mx-auto mb-12">
+                        <span class="section-tag"><i class="fas fa-paper-plane mr-2"></i> Let's Connect</span>
+                        <h2 class="section-title">Take the Next Step</h2>
+                        <p class="section-subtitle mx-auto mt-2">
+                            Ready to transform your vision into reality? Reach out to our team today.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+                        <div class="contact-form-card">
+                            <form id="contactForm" novalidate>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="fullName">Full Name <span class="text-[#F15A24]">*</span></label>
+                                        <input type="text" id="fullName" placeholder="e.g. Priya Sharma" required />
+                                    </div>
+                                    <div>
+                                        <label for="email">Email Address <span class="text-[#F15A24]">*</span></label>
+                                        <input type="email" id="email" placeholder="priya@startup.com" required />
+                                    </div>
+                                    <div>
+                                        <label for="phone">Phone Number <span class="text-[#F15A24]">*</span></label>
+                                        <input type="tel" id="phone" placeholder="+91 98765 43210" required />
+                                    </div>
+                                    <div>
+                                        <label for="organization">Organization <span class="text-[#F15A24]">*</span></label>
+                                        <input type="text" id="organization" placeholder="Your company / org" required />
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <label for="district">Select District <span class="text-[#F15A24]">*</span></label>
+                                    <select id="district" required>
+                                        <option value="">— Select Maharashtra District —</option>
+                                        <option value="pune">Pune</option>
+                                        <option value="ahmednagar">Ahmednagar</option>
+                                        <option value="nagpur">Nagpur</option>
+                                        <option value="mumbai-city">Mumbai City</option>
+                                        <option value="solapur">Solapur</option>
+                                        <option value="nashik">Nashik</option>
+                                        <option value="thane">Thane</option>
+                                        <option value="aurangabad">Aurangabad</option>
+                                        <option value="kolhapur">Kolhapur</option>
+                                        <option value="satara">Satara</option>
+                                        <option value="sangli">Sangli</option>
+                                        <option value="jalgaon">Jalgaon</option>
+                                        <option value="amravati">Amravati</option>
+                                        <option value="nanded">Nanded</option>
+                                        <option value="latur">Latur</option>
+                                    </select>
+                                    <p class="text-xs text-[#4A5568] mt-1">
+                                        <i class="fas fa-map-pin text-[#F15A24] mr-1"></i> We serve all Maharashtra districts.
+                                    </p>
+                                </div>
+                                <div class="mt-4">
+                                    <label for="message">Message <span class="text-[#F15A24]">*</span></label>
+                                    <textarea id="message" rows="4" placeholder="Tell us about your goals, challenges, or funding needs…" required></textarea>
+                                </div>
+                                <button type="submit" class="btn-orange mt-5" id="submitBtn">
+                                    <i class="fas fa-phone-alt"></i> Request a Call
+                                </button>
+                                <div id="formSuccess" class="form-success mt-4">
+                                    <div class="text-4xl mb-2">✅</div>
+                                    <p class="font-semibold text-[#164194]">Thank you! We'll reach out within 24 hours.</p>
+                                    <button type="button" class="text-[#F15A24] text-sm font-medium mt-2 hover:underline" onclick="resetContactForm()">Send another request</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="map-vector">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <h4>Maharashtra Regional Network</h4>
+                            <p>Wakad, Pune, Maharashtra, India</p>
+                            <div class="mt-4 text-sm text-[#4A5568] space-y-1">
+                                <p><i class="fas fa-envelope text-[#F15A24] mr-2"></i> hello@startupsetu.com</p>
+                                <p><i class="fas fa-phone text-[#F15A24] mr-2"></i> +91 99999 99999</p>
+                                <p><i class="fas fa-map-pin text-[#F15A24] mr-2"></i> Wakad, Pune, MH, India</p>
+                            </div>
+                            <div class="mt-6 text-5xl opacity-10 text-[#164194]">
+                                <i class="fas fa-bridge"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </section><!-- /view-home -->
+
+
+        <!-- ============================================================
+        VIEW: SERVICES
+        ============================================================ -->
+        <section id="view-services" class="view">
+            <div class="view-content container-custom section-padding bg-[#F4F7FC]">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <span class="section-tag"><i class="fas fa-cogs mr-2"></i> What We Do</span>
+                    <h2 class="section-title">Our Core Services</h2>
+                    <p class="section-subtitle mx-auto mt-3">
+                        We bring together businesses looking for investment and investors with the capital, contacts, and knowledge to help them succeed.
+                    </p>
+                </div>
+                <div id="servicesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Rendered by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================
+        VIEW: EVENTS
+        ============================================================ -->
+        <section id="view-events" class="view">
+            <div class="view-content container-custom section-padding bg-white">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <span class="section-tag"><i class="fas fa-calendar-alt mr-2"></i> Stay Connected</span>
+                    <h2 class="section-title">Upcoming &amp; Past Events</h2>
+                    <p class="section-subtitle mx-auto mt-3">
+                        Join us at our events to learn, network, and grow your venture. From pitch sessions to growth workshops, there's something for every founder.
+                    </p>
+                </div>
+                <div id="eventsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Rendered by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================
+        VIEW: MEDIA
+        ============================================================ -->
+        <section id="view-media" class="view">
+            <div class="view-content container-custom section-padding bg-[#F4F7FC]">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <span class="section-tag"><i class="fas fa-photo-video mr-2"></i> In the Spotlight</span>
+                    <h2 class="section-title">Media &amp; Press</h2>
+                    <p class="section-subtitle mx-auto mt-3">
+                        Explore our latest articles, interviews, and press releases covering the StartupSetu journey and the broader startup ecosystem.
+                    </p>
+                </div>
+                <div id="mediaContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Rendered by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
 
     <!-- ============================================================
-    FOOTER
+    FOOTER (shared)
     ============================================================ -->
     <footer class="footer">
         <div class="container-custom">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-
                 <div>
-                    <a href="#" class="logo-wrapper" aria-label="StartupSetu homepage">
+                    <a href="#" class="logo-wrapper" aria-label="StartupSetu homepage" id="footerLogoLink">
                         <img src="logo.png" alt="StartupSetu Logo" />
                         <div class="logo-tagline">
                             Salah Bhi, Sath Bhi!
@@ -1719,28 +1678,23 @@
                         <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
-
                 <div>
                     <h4 class="footer-heading">Quick Links</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#">Terms &amp; Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Refund Policy</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
+                        <li><button class="nav-link" data-view="home" style="background:none;border:none;color:rgba(255,255,255,0.7);">Home</button></li>
+                        <li><button class="nav-link" data-view="services" style="background:none;border:none;color:rgba(255,255,255,0.7);">Services</button></li>
+                        <li><button class="nav-link" data-view="events" style="background:none;border:none;color:rgba(255,255,255,0.7);">Events</button></li>
+                        <li><button class="nav-link" data-view="media" style="background:none;border:none;color:rgba(255,255,255,0.7);">Media</button></li>
                     </ul>
                 </div>
-
                 <div>
                     <h4 class="footer-heading">Popular Links</h4>
                     <ul class="space-y-2 text-sm">
                         <li><a href="#about">About Us</a></li>
-                        <li><a href="#services">Services</a></li>
                         <li><a href="#contact">Contact Us</a></li>
                         <li><a href="#advisors">Advisors</a></li>
                     </ul>
                 </div>
-
                 <div>
                     <h4 class="footer-heading">Follow Us</h4>
                     <ul class="space-y-3 text-sm">
@@ -1758,29 +1712,203 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
-
             <div class="footer-bottom">
                 <p>&copy; StartupSetu. All Rights Reserved. Designed by Kunal Maske</p>
             </div>
         </div>
     </footer>
 
+
     <!-- ============================================================
-    JAVASCRIPT
+    JAVASCRIPT — DATA + ROUTER + RENDER
     ============================================================ -->
     <script>
         (function() {
             'use strict';
 
             // ============================================================
-            // 0. REMOVE CLOAK — ensures content shows reliably
+            // 0. CLOAK READY
             // ============================================================
             document.body.classList.add('ready');
 
             // ============================================================
-            // 1. NAVBAR
+            // 1. DATA — REAL BRAND CONTENT
+            // ============================================================
+            const data = {
+                services: [{
+                    icon: 'fa-handshake',
+                    title: 'Business Support Services',
+                    description: 'Outsourcing operational support, cost reduction, and specialized skills to streamline your business and help you scale efficiently.',
+                    link: '#'
+                }, {
+                    icon: 'fa-project-diagram',
+                    title: 'Business Blueprinting & Consulting',
+                    description: 'Customized performance improvement strategies and strategic execution frameworks tailored to your unique business challenges.',
+                    link: '#'
+                }, {
+                    icon: 'fa-coins',
+                    title: 'Business Funding & Finance Assistance',
+                    description: 'Capital acquisition, financial modeling, and VC readiness — we help you secure the funding you need to grow and succeed.',
+                    link: '#'
+                }],
+                events: [{
+                    date: '15 Aug 2026',
+                    title: 'Independence Day Startup Summit',
+                    description: 'Join us for a special summit celebrating India\'s startup ecosystem. Keynotes, panels, and networking.',
+                    link: '#'
+                }, {
+                    date: '10 Sep 2026',
+                    title: 'VC Connect: Pitch & Partner',
+                    description: 'Pitch your startup to top VCs and corporate partners. Limited seats – register now!',
+                    link: '#'
+                }, {
+                    date: '5 Nov 2026',
+                    title: 'MSME Growth Workshop',
+                    description: 'Practical workshop on scaling your MSME, accessing government schemes, and building a resilient business.',
+                    link: '#'
+                }, {
+                    date: '20 Jan 2027',
+                    title: 'FPO Agri-Tech Conclave',
+                    description: 'Empowering Farmer Producer Organizations with technology, financing, and market linkages.',
+                    link: '#'
+                }],
+                media: [{
+                    title: 'StartupSetu Featured in Economic Times',
+                    description: 'Our founder speaks about the future of startup funding in India.',
+                    image: 'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=400&h=225&fit=crop&crop=center&auto=format',
+                    link: '#'
+                }, {
+                    title: 'Podcast: Building a Startup Ecosystem',
+                    description: 'Listen to our experts discuss the challenges and opportunities for Indian startups.',
+                    image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=400&h=225&fit=crop&crop=center&auto=format',
+                    link: '#'
+                }, {
+                    title: 'Press Release: New Incubation Centre Launch',
+                    description: 'We are proud to announce the opening of our new incubation centre in Pune.',
+                    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=225&fit=crop&crop=center&auto=format',
+                    link: '#'
+                }, {
+                    title: 'Interview: NAAC Implementation for Colleges',
+                    description: 'How StartupSetu is helping colleges achieve NAAC accreditation with ease.',
+                    image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=225&fit=crop&crop=center&auto=format',
+                    link: '#'
+                }, {
+                    title: 'Webinar: Funding Opportunities for Startups',
+                    description: 'Recording of our webinar on government schemes, angel investment, and VC funding.',
+                    image: 'https://images.unsplash.com/photo-1551818255-e6e10975bc17?w=400&h=225&fit=crop&crop=center&auto=format',
+                    link: '#'
+                }]
+            };
+
+            // ============================================================
+            // 2. RENDER FUNCTIONS
+            // ============================================================
+            function renderServices() {
+                const container = document.getElementById('servicesContainer');
+                if (!container) return;
+                container.innerHTML = data.services.map(s => `
+                        <div class="service-card">
+                            <div class="service-icon"><i class="fas ${s.icon}"></i></div>
+                            <h3>${s.title}</h3>
+                            <p>${s.description}</p>
+                            <a href="${s.link}" class="read-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    `).join('');
+            }
+
+            function renderEvents() {
+                const container = document.getElementById('eventsContainer');
+                if (!container) return;
+                container.innerHTML = data.events.map(e => `
+                        <div class="event-card">
+                            <div class="event-date"><i class="far fa-calendar-alt mr-1"></i> ${e.date}</div>
+                            <h3>${e.title}</h3>
+                            <p>${e.description}</p>
+                            <a href="${e.link}" class="read-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    `).join('');
+            }
+
+            function renderMedia() {
+                const container = document.getElementById('mediaContainer');
+                if (!container) return;
+                container.innerHTML = data.media.map(m => `
+                        <div class="media-card">
+                            <div class="media-thumb">
+                                ${m.image ? `<img src="${m.image}" alt="${m.title}" loading="lazy" />` :
+                                `<div class="placeholder-icon"><i class="fas fa-file-image"></i></div>`}
+                            </div>
+                            <h3>${m.title}</h3>
+                            <p>${m.description}</p>
+                            <a href="${m.link}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    `).join('');
+            }
+
+            // ============================================================
+            // 3. SPA ROUTER
+            // ============================================================
+            const views = {
+                home: document.getElementById('view-home'),
+                services: document.getElementById('view-services'),
+                events: document.getElementById('view-events'),
+                media: document.getElementById('view-media')
+            };
+
+            const navLinks = document.querySelectorAll('.nav-link[data-view]');
+
+            function navigateTo(viewName, anchor) {
+                Object.values(views).forEach(v => v.classList.remove('active'));
+
+                const targetView = views[viewName];
+                if (targetView) {
+                    targetView.classList.add('active');
+                } else {
+                    views.home.classList.add('active');
+                }
+
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('data-view') === viewName);
+                });
+
+                if (anchor) {
+                    setTimeout(() => {
+                        const el = document.querySelector(anchor);
+                        if (el) {
+                            const top = el.getBoundingClientRect().top + window.scrollY - 80;
+                            window.scrollTo({ top, behavior: 'smooth' });
+                        }
+                    }, 100);
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const view = this.getAttribute('data-view');
+                    if (view) {
+                        let [viewName, anchor] = view.split('#');
+                        navigateTo(viewName, anchor ? '#' + anchor : null);
+                        if (mobileMenu.classList.contains('open')) {
+                            toggleMenu(false);
+                        }
+                    }
+                });
+            });
+
+            document.getElementById('logoLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                navigateTo('home');
+            });
+            document.getElementById('footerLogoLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                navigateTo('home');
+            });
+
+            // ============================================================
+            // 4. NAVBAR / HAMBURGER
             // ============================================================
             const navbar = document.getElementById('navbar');
             const hamburger = document.getElementById('hamburger');
@@ -1812,9 +1940,11 @@
                 toggleMenu(false);
             });
 
-            mobileMenu.querySelectorAll('.nav-link, .btn-orange').forEach(function(link) {
+            document.querySelectorAll('.nav-menu .nav-link, .nav-menu .btn-orange').forEach(function(link) {
                 link.addEventListener('click', function() {
-                    toggleMenu(false);
+                    if (mobileMenu.classList.contains('open')) {
+                        toggleMenu(false);
+                    }
                 });
             });
 
@@ -1825,31 +1955,7 @@
             });
 
             // ============================================================
-            // 2. ACTIVE NAV LINK
-            // ============================================================
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-link');
-
-            function highlightNav() {
-                let current = '';
-                sections.forEach(function(section) {
-                    const top = section.offsetTop - 130;
-                    if (window.scrollY >= top) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                navLinks.forEach(function(link) {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-            window.addEventListener('scroll', highlightNav);
-            highlightNav();
-
-            // ============================================================
-            // 3. COUNTER ANIMATIONS
+            // 5. COUNTER ANIMATIONS
             // ============================================================
             const counterElements = document.querySelectorAll('.number[data-target]');
             let countersAnimated = false;
@@ -1857,19 +1963,18 @@
             function animateCounters() {
                 if (countersAnimated) return;
                 countersAnimated = true;
-
                 counterElements.forEach(function(el) {
                     const target = parseInt(el.getAttribute('data-target'), 10);
                     if (isNaN(target)) return;
                     let current = 0;
-                    const increment = Math.ceil(target / 55);
+                    const increment = Math.ceil(target / 45);
                     const timer = setInterval(function() {
                         current += increment;
                         if (current >= target) {
                             current = target;
                             clearInterval(timer);
                         }
-                        el.textContent = current + (target > 100 ? '+' : '');
+                        el.textContent = current + '+';
                     }, 25);
                 });
             }
@@ -1908,7 +2013,7 @@
             }, 500);
 
             // ============================================================
-            // 4. CONTACT FORM
+            // 6. CONTACT FORM
             // ============================================================
             const contactForm = document.getElementById('contactForm');
             const submitBtn = document.getElementById('submitBtn');
@@ -1916,7 +2021,6 @@
 
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-
                 const required = contactForm.querySelectorAll('input[required], select[required], textarea[required]');
                 let valid = true;
                 required.forEach(function(inp) {
@@ -1927,15 +2031,12 @@
                         inp.style.borderColor = '';
                     }
                 });
-
                 if (!valid) {
                     alert('Please fill in all required fields.');
                     return;
                 }
-
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
-
                 setTimeout(function() {
                     contactForm.querySelectorAll('input, select, textarea').forEach(function(el) {
                         if (el.tagName !== 'BUTTON') {
@@ -1959,24 +2060,40 @@
             };
 
             // ============================================================
-            // 5. SMOOTH SCROLL
+            // 7. SMOOTH SCROLL for in-page anchors
             // ============================================================
-            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            document.querySelectorAll('a[href^="#"]:not([data-view])').forEach(function(anchor) {
                 anchor.addEventListener('click', function(e) {
                     const href = this.getAttribute('href');
                     if (href === '#') return;
                     const target = document.querySelector(href);
                     if (target) {
                         e.preventDefault();
-                        const offset = 80;
-                        const top = target.getBoundingClientRect().top + window.scrollY - offset;
-                        window.scrollTo({ top: top, behavior: 'smooth' });
+                        if (!views.home.classList.contains('active')) {
+                            navigateTo('home');
+                            setTimeout(() => {
+                                const top = target.getBoundingClientRect().top + window.scrollY -
+                                80;
+                                window.scrollTo({ top, behavior: 'smooth' });
+                            }, 200);
+                        } else {
+                            const top = target.getBoundingClientRect().top + window.scrollY - 80;
+                            window.scrollTo({ top, behavior: 'smooth' });
+                        }
                     }
                 });
             });
 
             // ============================================================
-            // 6. DISTRICT SELECT
+            // 8. INIT
+            // ============================================================
+            renderServices();
+            renderEvents();
+            renderMedia();
+            navigateTo('home');
+
+            // ============================================================
+            // 9. DISTRICT SELECT
             // ============================================================
             const districtSelect = document.getElementById('district');
             if (districtSelect) {
